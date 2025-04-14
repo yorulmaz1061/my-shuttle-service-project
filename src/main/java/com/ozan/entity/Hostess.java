@@ -1,5 +1,6 @@
 package com.ozan.entity;
 
+import com.ozan.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,13 +21,17 @@ public class Hostess extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String hostessTcId;
 
-    private String hostessAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private AddressAndPhone addressAndPhone;
 
-    private String hostessPhoneNumber;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    private Boolean isActive;
-
-    @OneToOne
+    @OneToOne (mappedBy = "hostess")
     private Vehicle vehicle;
+
+    @OneToMany(mappedBy = "hostess")
+    private List<Salary> salaryList;
 
 }

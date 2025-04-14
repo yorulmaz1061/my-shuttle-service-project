@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -15,17 +13,24 @@ import javax.persistence.OneToOne;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Student extends BaseEntity {
-    private String studentName;
-    private String studentTcId;
-    private String studentAddress;
-    private String studentPhone;
 
-    @OneToOne
+    private String studentName;
+
+    private String studentTcId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "adressAndPhone_id")
+    private AddressAndPhone addressAndPhone;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
-    @OneToOne
+
+    @OneToOne(mappedBy = "student")
     private School school;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Parent parent;
 
 

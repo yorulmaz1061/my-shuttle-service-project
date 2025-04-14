@@ -15,15 +15,21 @@ import java.math.BigDecimal;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Salary extends BaseEntity {
+
     private BigDecimal amount;
+
     private boolean isPaid;
+
+    @Enumerated(EnumType.STRING)
     private Months month;
 
-    @ManyToOne
-    private Driver driverSalary;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 
-    @ManyToOne
-    private Hostess hostessSalary;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hostess_id")
+    private Hostess hostess;
 
 
 }

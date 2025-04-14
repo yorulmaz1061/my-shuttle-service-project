@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -15,12 +14,21 @@ import java.util.List;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Parent extends BaseEntity {
+
     private String parentName;
+
     private String parentTcId;
-    private String parentPhoneNumber;
-    private String email;
-    private String parentAddress;
-    private String parentStreet;
-    private String parentCity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private AddressAndPhone addressAndPhone;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Payment> paymentList;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Student> studentList;
+
+
 
 }

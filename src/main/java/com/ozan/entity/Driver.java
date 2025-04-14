@@ -1,6 +1,7 @@
 package com.ozan.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ozan.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,16 +22,17 @@ public class Driver extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String driverTcId;
 
-    private String driverAddress;
-
-    private String driverPhoneNumber;
-
     private String driverLicenseNumber;
 
-    private Boolean isActive;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    @OneToOne
+    @OneToOne (mappedBy = "driver")
     private Vehicle vehicle;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="adress_id")
+    private AddressAndPhone addressAndPhone;
 
 
 

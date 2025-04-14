@@ -1,5 +1,6 @@
 package com.ozan.entity;
 
+import com.ozan.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,21 +15,33 @@ import java.util.List;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Vehicle extends BaseEntity {
+
     private String plateNumber;
 
     private String routeNumber;
-    private String make;
-    private Boolean isFull;
-    private Integer totalStudentCount;
-    private Boolean isActive;
 
-    @OneToOne(mappedBy = "vehicle")
+    private String make;
+
+    private Boolean isFull;
+
+    private Integer totalStudentCount;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @ManyToMany
-    @JoinTable(name = "vehicle_school_rel"
-    , joinColumns = @JoinColumn(name = "vehicle_id")
-    ,inverseJoinColumns = @JoinColumn(name = "school_id"))
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hostess_id")
+    private Hostess hostess;
+
+    @ManyToMany(mappedBy = "vehicleList")
     private List<School> schoolList;
+
+    @OneToOne(mappedBy = "vehicle")
+    private Student student;
+
 
 }
