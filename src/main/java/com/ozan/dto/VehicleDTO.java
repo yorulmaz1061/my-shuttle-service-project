@@ -4,16 +4,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ozan.entity.Driver;
 import com.ozan.entity.School;
 import com.ozan.entity.Student;
+import com.ozan.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,7 +22,6 @@ public class VehicleDTO {
     @JsonIgnore
     private Long id;
 
-    @NotNull
     private String plateNumber;
 
     private String routeNumber;
@@ -34,14 +32,19 @@ public class VehicleDTO {
 
     private Integer totalStudentCount;
 
-    private Boolean isActive;
+    private Status status;
 
-    @JsonManagedReference(value = "driver-vehicle reference")
+  //  @JsonManagedReference(value = "driver-vehicle-reference")
     private DriverDTO driverDTO;
 
-    @JsonBackReference(value = "school-vehicle-reference")
+ //   @JsonManagedReference(value = "hostess-vehicle-reference")
+    private HostessDTO hostessDTO;
+
+ //   @JsonBackReference(value = "vehicle-school-reference")
     private List<School> schoolList;
 
-    @JsonBackReference(value = "student-vehicle-reference")
-    private List<Student> studentList;
+  //  @JsonBackReference(value = "vehicle-student-reference")
+    private Student student;
+
+
 }

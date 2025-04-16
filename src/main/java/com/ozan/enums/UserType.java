@@ -1,14 +1,13 @@
 package com.ozan.enums;
 
-public enum AddressType {
+public enum UserType {
     STUDENT("Student"),
     DRIVER("Driver"),
     HOSTESS("Hostess"),
-    PARENT("Parent"),
-    SCHOOL("School");
-    private String value;
+    PARENT("Parent");
 
-    AddressType(String value) {
+    private String value;
+    UserType(String value) {
         this.value = value;
     }
 }

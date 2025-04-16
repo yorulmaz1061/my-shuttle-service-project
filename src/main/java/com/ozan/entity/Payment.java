@@ -1,13 +1,12 @@
 package com.ozan.entity;
 
-import com.ozan.enums.Months;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -18,17 +17,12 @@ public class Payment extends BaseEntity {
 
     private BigDecimal amount;
 
-    @Enumerated(EnumType.STRING)
-    private Months month;
+    private LocalDate paymentDate;
 
-    private boolean isPaid;
+    private boolean isAnyUnpaid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Parent parent;
-
-
-
-
 
 }

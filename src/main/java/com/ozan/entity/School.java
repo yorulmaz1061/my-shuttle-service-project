@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -20,9 +18,13 @@ public class School extends BaseEntity {
 
     private String contactPersonName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private AddressAndPhone addressAndPhone;
+    private String contactPersonPhone;
+
+    private String schoolAddress;
+
+    private String schoolStreet;
+
+    private String schoolCity;
 
     @ManyToMany
     @JoinTable(name = "vehicle_school_rel",
@@ -32,5 +34,7 @@ public class School extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Student student;
+
+    private Integer currentTemperature;
 
 }
