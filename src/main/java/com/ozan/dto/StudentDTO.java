@@ -16,14 +16,10 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentDTO extends UserDTO {
 
-  //  @JsonManagedReference(value = "student-vehicle-reference")
     private VehicleDTO vehicleDTO;
 
- //   @JsonBackReference(value = "student-school-reference")
     private SchoolDTO schoolDTO;
 
-  //  @JsonManagedReference(value = "student-parent-reference")
     private ParentDTO parentDTO;
-
 
 }

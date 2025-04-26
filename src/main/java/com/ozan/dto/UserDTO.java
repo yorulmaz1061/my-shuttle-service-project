@@ -1,8 +1,8 @@
 package com.ozan.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ozan.enums.Status;
 import com.ozan.enums.UserType;
 import lombok.AllArgsConstructor;
@@ -19,13 +19,15 @@ public class UserDTO {
     @JsonIgnore
     private Long id;
 
-    private String userName;
+    private String userFirstName;
+    private String userLastName;
     private String userTcId;
     private String addressLine;
     private String street;
     private String city;
     private String phoneNumber;
     private String email;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Status status;
     private UserType userType;
 

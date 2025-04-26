@@ -12,8 +12,11 @@ import javax.persistence.*;
 @MappedSuperclass
 public class User extends BaseEntity{
 
-    private String userName;
+    private String userFirstName;
 
+    private String userLastName;
+
+    @Column(unique=true)
     private String userTcId;
 
     private String addressLine;
