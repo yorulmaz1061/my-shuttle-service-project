@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Vehicle extends BaseEntity {
-
+    @Column(unique=true)
     private String plateNumber;
 
     private String routeNumber;
@@ -39,8 +39,8 @@ public class Vehicle extends BaseEntity {
     @ManyToMany(mappedBy = "vehicleList")
     private List<School> schoolList;
 
-    @OneToOne(mappedBy = "vehicle")
-    private Student student;
+    @OneToMany(mappedBy = "vehicle")
+    private List<Student> studentList;
 
 
 }

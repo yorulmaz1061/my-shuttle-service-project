@@ -9,7 +9,6 @@ import com.ozan.mapper.MapperUtil;
 import com.ozan.repository.StudentRepository;
 import com.ozan.service.StudentService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -22,7 +22,7 @@ public class Payment extends BaseEntity {
     private boolean isAnyUnpaid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
+    @JoinColumn(name = "student_id")
+    private Student student;
 
 }

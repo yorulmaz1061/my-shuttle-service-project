@@ -8,7 +8,6 @@ import com.ozan.mapper.MapperUtil;
 import com.ozan.repository.DriverRepository;
 import com.ozan.service.DriverService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -60,6 +59,15 @@ public class DriverServiceImpl implements DriverService {
         driver.setIsDeleted(true);
         driver.setStatus(Status.PASSIVE);
         driverRepository.save(driver);
+
+    }
+
+    @Override
+    public List<DriverDTO> listAvailableDrivers() {
+        List<Driver> availableDrivers = driverRepository.findAllByVehicleIsNullAndIsDeletedFalseAndStatusEquals(Status.ACTIVE);
+        return availableDrivers.stream().map(driver -> mapperUtil.convert(driver,new DriverDTO()))
+                .collect(java.util.stream.Collectors.toList());
+
 
     }
 

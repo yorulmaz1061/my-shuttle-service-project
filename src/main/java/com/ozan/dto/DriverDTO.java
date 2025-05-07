@@ -1,6 +1,5 @@
 package com.ozan.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,6 @@ public class DriverDTO extends UserDTO {
 
     private String driverLicenseNumber;
 
-   // @JsonBackReference (value = "driver-vehicle-reference")
     private VehicleDTO vehicleDTO;
 
 }

@@ -1,7 +1,6 @@
 package com.ozan.service;
 
 import com.ozan.dto.DriverDTO;
-
 import java.util.List;
 
 public interface DriverService {
@@ -15,4 +14,8 @@ public interface DriverService {
     DriverDTO updateDriver(DriverDTO driverDTO);
 
     void delete(String userTcId);
+
+    List<DriverDTO> listAvailableDrivers();
+
+
 }

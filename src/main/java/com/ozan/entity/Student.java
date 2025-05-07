@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -12,16 +14,24 @@ import javax.persistence.*;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Student extends User {
+    @NotBlank
+    private String parentFirstName;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotBlank
+    private String parentLastName;
+
+    @NotBlank
+    private String parentTcId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     @OneToOne(mappedBy = "student")
     private School school;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
+    @OneToMany(mappedBy = "student")
+    private List<Payment> paymentList;
+
 
 }

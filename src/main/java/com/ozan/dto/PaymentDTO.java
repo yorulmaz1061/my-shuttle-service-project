@@ -2,7 +2,6 @@ package com.ozan.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ public class PaymentDTO {
 
     private boolean isAnyUnpaid;
 
-  //  @JsonManagedReference(value = "parent-payment-reference")
-    private ParentDTO parentDTO;
+    private StudentDTO studentDTO;
 
 }

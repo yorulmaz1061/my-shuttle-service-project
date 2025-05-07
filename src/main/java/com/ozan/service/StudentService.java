@@ -2,7 +2,6 @@ package com.ozan.service;
 
 
 import com.ozan.dto.StudentDTO;
-
 import java.util.List;
 
 public interface StudentService {

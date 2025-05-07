@@ -2,7 +2,6 @@ package com.ozan.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +29,8 @@ public class SchoolDTO {
 
     private String schoolCity;
 
- //   @JsonManagedReference(value = "school-vehicle-reference")
     private List<VehicleDTO> vehicleDTOList;
 
-  //  @JsonManagedReference(value = "school-student-reference")
     private StudentDTO studentDTO;
 
     private Integer currentTemperature;

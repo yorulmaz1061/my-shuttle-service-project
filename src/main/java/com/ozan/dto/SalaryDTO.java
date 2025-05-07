@@ -3,7 +3,6 @@ package com.ozan.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +26,8 @@ public class SalaryDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate salaryDate;
 
- //   @JsonManagedReference(value = "driver-salary-reference")
     private DriverDTO driverDTO;
 
- //   @JsonManagedReference(value = "hostess-salary-reference")
     private HostessDTO hostessDTO;
 
 }

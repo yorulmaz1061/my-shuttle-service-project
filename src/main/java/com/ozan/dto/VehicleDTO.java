@@ -1,11 +1,7 @@
 package com.ozan.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ozan.entity.School;
-import com.ozan.entity.Student;
 import com.ozan.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,17 +30,12 @@ public class VehicleDTO {
 
     private Status status;
 
-  //  @JsonManagedReference(value = "driver-vehicle-reference")
     private DriverDTO driverDTO;
 
- //   @JsonManagedReference(value = "hostess-vehicle-reference")
     private HostessDTO hostessDTO;
 
- //   @JsonBackReference(value = "vehicle-school-reference")
-    private List<School> schoolList;
+    private List<SchoolDTO> schoolList;
 
-  //  @JsonBackReference(value = "vehicle-student-reference")
-    private Student student;
-
+    private List<StudentDTO> studentList;
 
 }
