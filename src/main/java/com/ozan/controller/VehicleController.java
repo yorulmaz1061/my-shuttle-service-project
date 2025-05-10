@@ -1,6 +1,7 @@
 package com.ozan.controller;
 
 import com.ozan.dto.DriverDTO;
+import com.ozan.dto.HostessDTO;
 import com.ozan.dto.ResponseWrapper;
 import com.ozan.dto.VehicleDTO;
 import com.ozan.service.VehicleService;
@@ -18,6 +19,7 @@ public class VehicleController {
     public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
+
     @PostMapping
     public ResponseEntity<ResponseWrapper> createVehicle(@RequestBody VehicleDTO vehicle) {
         VehicleDTO vehicleDTO = vehicleService.save(vehicle);
@@ -25,13 +27,15 @@ public class VehicleController {
                 , HttpStatus.CREATED.value(), vehicleDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseWrapper);
     }
+
     @GetMapping
-    public ResponseEntity<ResponseWrapper>getAllVehicles(){
+    public ResponseEntity<ResponseWrapper> getAllVehicles() {
         List<VehicleDTO> vehicleDTOList = vehicleService.listAllVehicles();
         ResponseWrapper responseWrapper = new ResponseWrapper(true, "Vehicles are listed."
                 , HttpStatus.OK.value(), vehicleDTOList);
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
     }
+
     @GetMapping("/{vehiclePlateNumber}")
     public ResponseEntity<ResponseWrapper> getVehicleByPlateNumber(@PathVariable("vehiclePlateNumber") String plateNumber) {
         VehicleDTO vehicleDTO = vehicleService.findVehicleByPlateNumber(plateNumber);
@@ -39,30 +43,40 @@ public class VehicleController {
                 , HttpStatus.OK.value(), vehicleDTO);
         return ResponseEntity.status(200).body(responseWrapper);
     }
+
     @PutMapping("/{vehiclePlateNumber}")
-    public ResponseEntity<ResponseWrapper>updateVehicle(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody VehicleDTO vehicleDTO){
+    public ResponseEntity<ResponseWrapper> updateVehicle(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody VehicleDTO vehicleDTO) {
         VehicleDTO updatedVehicleDTO = vehicleService.updateVehicle(vehicleDTO);
         ResponseWrapper responseWrapper = new ResponseWrapper(true, "Vehicle is updated."
                 , HttpStatus.OK.value(), updatedVehicleDTO);
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
     }
+
     @DeleteMapping("/{vehiclePlateNumber}")
-    public ResponseEntity<ResponseWrapper>deleteVehicle(@PathVariable("vehiclePlateNumber") String plateNumber){
+    public ResponseEntity<ResponseWrapper> deleteVehicle(@PathVariable("vehiclePlateNumber") String plateNumber) {
         vehicleService.delete(plateNumber);
         ResponseWrapper responseWrapper = new ResponseWrapper(true, "Vehicle is deleted."
                 , HttpStatus.OK.value(), null);
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
 
     }
+
     @PostMapping("/{vehiclePlateNumber}/assign-driver")
     public ResponseEntity<ResponseWrapper> assignDriver(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody DriverDTO driverDTO) {
-        VehicleDTO driverAssignedVehicleDTO = vehicleService.assignToDriver(plateNumber,driverDTO.getUserTcId());
+        VehicleDTO driverAssignedVehicleDTO = vehicleService.assignToDriver(plateNumber, driverDTO.getUserTcId());
         ResponseWrapper responseWrapper = new ResponseWrapper(true, "Driver is assigned to vehicle.",
                 HttpStatus.OK.value(), driverAssignedVehicleDTO);
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
     }
 
+    @PostMapping("/{vehiclePlateNumber}/assign-hostess")
+    public ResponseEntity<ResponseWrapper> assignHostess(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody HostessDTO hostessDTO) {
+        VehicleDTO hostessAssignedVehicleDTO = vehicleService.assignToHostess(plateNumber, hostessDTO.getUserTcId());
+        ResponseWrapper responseWrapper = new ResponseWrapper(true, "Hostess is assigned to vehicle.",
+        HttpStatus.OK.value(), hostessAssignedVehicleDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
 
+    }
 
 
 }

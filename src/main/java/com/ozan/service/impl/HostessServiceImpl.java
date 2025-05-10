@@ -9,6 +9,7 @@ import com.ozan.repository.HostessRepository;
 import com.ozan.service.HostessService;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HostessServiceImpl implements HostessService {
@@ -60,6 +61,14 @@ public class HostessServiceImpl implements HostessService {
         hostess.setIsDeleted(true);
         hostess.setStatus(Status.PASSIVE);
         hostessRepository.save(hostess);
+
+    }
+
+    @Override
+    public List <HostessDTO> listAvailableHostess() {
+        List<Hostess> availableHostessList = hostessRepository.findAllByVehicleIsNullAndIsDeletedFalseAndStatusEquals(Status.ACTIVE);
+        return availableHostessList.stream().map(hostess -> mapperUtil.convert(hostess,new HostessDTO()))
+                .collect(Collectors.toList());
 
     }
 

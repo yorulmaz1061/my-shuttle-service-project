@@ -13,4 +13,6 @@ public interface HostessService {
     HostessDTO updateHostess(HostessDTO hostessDTO);
 
     void delete(String userTcId);
+
+    List<HostessDTO> listAvailableHostess();
 }

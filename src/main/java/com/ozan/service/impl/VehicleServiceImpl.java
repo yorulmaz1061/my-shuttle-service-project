@@ -1,8 +1,9 @@
 package com.ozan.service.impl;
 
 import com.ozan.dto.DriverDTO;
+import com.ozan.dto.HostessDTO;
 import com.ozan.dto.VehicleDTO;
-import com.ozan.entity.Driver;
+import com.ozan.entity.Hostess;
 import com.ozan.entity.Vehicle;
 import com.ozan.enums.Status;
 import com.ozan.exception.NotFoundException;
@@ -10,6 +11,7 @@ import com.ozan.mapper.MapperUtil;
 import com.ozan.repository.DriverRepository;
 import com.ozan.repository.VehicleRepository;
 import com.ozan.service.DriverService;
+import com.ozan.service.HostessService;
 import com.ozan.service.VehicleService;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -21,20 +23,20 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final MapperUtil mapperUtil;
     private final DriverService driverService;
-    private final DriverRepository driverRepository;
+    private final HostessService hostessService;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, MapperUtil mapperUtil, DriverService driverService, DriverRepository driverRepository) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, MapperUtil mapperUtil, DriverService driverService, DriverRepository driverRepository, HostessService hostessService) {
         this.vehicleRepository = vehicleRepository;
         this.mapperUtil = mapperUtil;
         this.driverService = driverService;
-        this.driverRepository = driverRepository;
+        this.hostessService = hostessService;
     }
 
     @Override
     public VehicleDTO save(VehicleDTO vehicleDTO) {
         vehicleDTO.setStatus(Status.ACTIVE);
-        vehicleRepository.save(mapperUtil.convert(vehicleDTO, new Vehicle()));
-        return mapperUtil.convert(vehicleDTO, new VehicleDTO());
+        Vehicle savedVehicle = vehicleRepository.save(mapperUtil.convert(vehicleDTO, new Vehicle()));
+        return mapperUtil.convert(savedVehicle, new VehicleDTO());
     }
 
     @Override
@@ -70,18 +72,27 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public VehicleDTO assignToDriver(String plateNumber, String userTcId) {
-        VehicleDTO vehicleDTO = findVehicleByPlateNumber(plateNumber);
-        DriverDTO selectedDriverDTO = driverService.listAvailableDrivers()
-                .stream().filter(driver -> driver.getUserTcId().equals(userTcId)).findFirst()
-                .orElseThrow(() -> new NotFoundException("Driver not found or not available"));
-        vehicleDTO.setDriverDTO(selectedDriverDTO);
-        selectedDriverDTO.setVehicleDTO(vehicleDTO);
-        Vehicle vehicle = mapperUtil.convert(vehicleDTO, new Vehicle());
-        vehicleRepository.save(vehicle);
-        Driver driver = mapperUtil.convert(selectedDriverDTO, new Driver());
-        driverRepository.save(driver);
-        return mapperUtil.convert(vehicle, new VehicleDTO());
+       Vehicle vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+       DriverDTO selectedDriverDTO = driverService.listAvailableDrivers()
+               .stream().filter(driver->driver.getUserTcId().equals(userTcId)).findFirst()
+               .orElseThrow(()-> new NotFoundException("Driver not found or not available."));
+       vehicle.setHostess(mapperUtil.convert(selectedDriverDTO, new Hostess()));
+       vehicle = vehicleRepository.save(vehicle);
+       return mapperUtil.convert(vehicle, new VehicleDTO());
 
+    }
+
+    @Override
+    public VehicleDTO assignToHostess(String plateNumber, String userTcId) {
+        Vehicle vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+        HostessDTO selectedHostessDTO = hostessService.listAvailableHostess()
+                .stream()
+                .filter(hostess -> hostess.getUserTcId().equals(userTcId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Hostess not found or not available"));
+        vehicle.setHostess(mapperUtil.convert(selectedHostessDTO, new Hostess()));
+        vehicle = vehicleRepository.save(vehicle);
+        return mapperUtil.convert(vehicle, new VehicleDTO());
     }
 
 

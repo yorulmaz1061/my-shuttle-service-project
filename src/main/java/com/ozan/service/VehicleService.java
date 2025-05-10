@@ -16,4 +16,6 @@ public interface VehicleService {
     void delete(String plateNumber);
 
     VehicleDTO assignToDriver(String plateNumber, String userTcId);
+
+    VehicleDTO assignToHostess(String plateNumber, String userTcId);
 }
