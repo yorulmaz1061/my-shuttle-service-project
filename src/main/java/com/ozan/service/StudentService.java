@@ -14,4 +14,6 @@ public interface StudentService {
     StudentDTO updateStudent(StudentDTO studentDTO);
 
     void delete(String userTcId);
+
+    List<StudentDTO> listAvailableStudents();
 }

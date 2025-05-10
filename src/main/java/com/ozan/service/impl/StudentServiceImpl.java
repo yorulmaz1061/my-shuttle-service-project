@@ -66,5 +66,13 @@ public  class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
     }
 
+    @Override
+    public List<StudentDTO> listAvailableStudents() {
+        List<Student> availableStudents = studentRepository.findAllByVehicleIsNullAndIsDeletedFalseAndStatusEquals(Status.ACTIVE);
+        return availableStudents.stream().map(student -> mapperUtil.convert(student,new StudentDTO()))
+                .collect(Collectors.toList());
+
+    }
+
 
 }

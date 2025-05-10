@@ -53,5 +53,18 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionWrapper);
     }
+    @ExceptionHandler(VehicleCapacityExceededException.class)
+    public ResponseEntity<ExceptionWrapper> handleVehicleCapacityExceededException(VehicleCapacityExceededException ex,
+                                                                                   HttpServletRequest request) {
+        ExceptionWrapper exceptionWrapper = new ExceptionWrapper();
+        exceptionWrapper.setTimestamp(LocalDateTime.now());
+        exceptionWrapper.setMessage(ex.getMessage());
+        exceptionWrapper.setStatus(HttpStatus.BAD_REQUEST.value());
+        exceptionWrapper.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionWrapper);
+    }
+
+
 
 }

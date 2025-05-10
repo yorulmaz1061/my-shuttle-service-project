@@ -18,4 +18,6 @@ public interface VehicleService {
     VehicleDTO assignToDriver(String plateNumber, String userTcId);
 
     VehicleDTO assignToHostess(String plateNumber, String userTcId);
+
+    VehicleDTO assignToStudent(String plateNumber, String userTcId);
 }

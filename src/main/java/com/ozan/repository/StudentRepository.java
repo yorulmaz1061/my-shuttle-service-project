@@ -1,6 +1,7 @@
 package com.ozan.repository;
 
 import com.ozan.entity.Student;
+import com.ozan.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -15,4 +16,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findByUserTcIdAndIsDeleted(String userTcId, Boolean isDeleted);
 
+    List<Student> findAllByVehicleIsNullAndIsDeletedFalseAndStatusEquals(Status status);
 }

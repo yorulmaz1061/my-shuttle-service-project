@@ -59,8 +59,8 @@ public class DriverServiceImpl implements DriverService {
         driver.setIsDeleted(true);
         driver.setStatus(Status.PASSIVE);
         driverRepository.save(driver);
-
     }
+
 
     @Override
     public List<DriverDTO> listAvailableDrivers() {

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,7 +40,7 @@ public class Vehicle extends BaseEntity {
     @ManyToMany(mappedBy = "vehicleList")
     private List<School> schoolList;
 
-    @OneToMany(mappedBy = "vehicle")
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Student> studentList;
 
 

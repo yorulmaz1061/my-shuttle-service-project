@@ -1,9 +1,6 @@
 package com.ozan.controller;
 
-import com.ozan.dto.DriverDTO;
-import com.ozan.dto.HostessDTO;
-import com.ozan.dto.ResponseWrapper;
-import com.ozan.dto.VehicleDTO;
+import com.ozan.dto.*;
 import com.ozan.service.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +74,16 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
 
     }
+    @PostMapping("/{vehiclePlateNumber}/assign-student")
+    public ResponseEntity<ResponseWrapper> assignStudent(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody StudentDTO studentDTO) {
+        VehicleDTO studentAssignedVehicleDTO = vehicleService.assignToStudent(plateNumber,studentDTO.getUserTcId());
+        ResponseWrapper responseWrapper = new ResponseWrapper(true, "Student is assigned to vehicle.",
+                HttpStatus.OK.value(), studentAssignedVehicleDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
+
+    }
+
+
 
 
 }
