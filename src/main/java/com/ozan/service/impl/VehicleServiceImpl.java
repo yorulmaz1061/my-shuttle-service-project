@@ -1,25 +1,17 @@
 package com.ozan.service.impl;
 
-import com.ozan.dto.DriverDTO;
-import com.ozan.dto.HostessDTO;
-import com.ozan.dto.StudentDTO;
-import com.ozan.dto.VehicleDTO;
-import com.ozan.entity.Driver;
-import com.ozan.entity.Hostess;
-import com.ozan.entity.Student;
-import com.ozan.entity.Vehicle;
+import com.ozan.dto.*;
+import com.ozan.entity.*;
 import com.ozan.enums.Status;
 import com.ozan.exception.NotFoundException;
 import com.ozan.exception.VehicleCapacityExceededException;
 import com.ozan.mapper.MapperUtil;
 import com.ozan.repository.DriverRepository;
 import com.ozan.repository.VehicleRepository;
-import com.ozan.service.DriverService;
-import com.ozan.service.HostessService;
-import com.ozan.service.StudentService;
-import com.ozan.service.VehicleService;
+import com.ozan.service.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +23,15 @@ public class VehicleServiceImpl implements VehicleService {
     private final DriverService driverService;
     private final HostessService hostessService;
     private final StudentService studentService;
+    private final SchoolService schoolService;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, MapperUtil mapperUtil, DriverService driverService, DriverRepository driverRepository, HostessService hostessService, StudentService studentService) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, MapperUtil mapperUtil, DriverService driverService, DriverRepository driverRepository, HostessService hostessService, StudentService studentService, SchoolService schoolService) {
         this.vehicleRepository = vehicleRepository;
         this.mapperUtil = mapperUtil;
         this.driverService = driverService;
         this.hostessService = hostessService;
         this.studentService = studentService;
+        this.schoolService = schoolService;
     }
 
     @Override
@@ -124,6 +118,24 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setIsFull(vehicle.getTotalStudentCount() >= 2);
         vehicleRepository.save(vehicle);
         return mapperUtil.convert(vehicle, new VehicleDTO());
+
+    }
+
+    @Override
+    public VehicleDTO assignToSchool(String plateNumber, Long id) {
+        Vehicle vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+        if (vehicle == null) throw new NotFoundException("Vehicle not found with plate number: " + plateNumber);
+
+        SchoolDTO selectedSchoolDTO = schoolService.listAvailableSchools().stream()
+                .filter(schoolDTO -> schoolDTO.getId().equals(id))
+                .findFirst().orElseThrow(() -> new NotFoundException("School not found or not available."));
+
+         School school = mapperUtil.convert(selectedSchoolDTO, new School());
+         if (school.getVehicleList() == null) school.setVehicleList(new ArrayList<>());
+         school.getVehicleList().add(vehicle);
+         vehicle.setSchool(school);
+         vehicleRepository.save(vehicle);
+         return mapperUtil.convert(vehicle, new VehicleDTO());
 
     }
 

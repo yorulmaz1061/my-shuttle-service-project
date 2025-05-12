@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SchoolDTO {
-    @JsonIgnore
+
     private Long id;
 
     private String schoolName;
@@ -31,7 +31,7 @@ public class SchoolDTO {
 
     private List<VehicleDTO> vehicleDTOList;
 
-    private StudentDTO studentDTO;
+    private List<StudentDTO> studentDTOList;
 
     private Integer currentTemperature;
 

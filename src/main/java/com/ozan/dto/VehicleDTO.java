@@ -34,7 +34,7 @@ public class VehicleDTO {
 
     private HostessDTO hostessDTO;
 
-    private List<SchoolDTO> schoolList;
+    private SchoolDTO schoolDTO;
 
     private List<StudentDTO> studentList;
 

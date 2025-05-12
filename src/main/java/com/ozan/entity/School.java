@@ -26,14 +26,11 @@ public class School extends BaseEntity {
 
     private String schoolCity;
 
-    @ManyToMany
-    @JoinTable(name = "vehicle_school_rel",
-            joinColumns = @JoinColumn(name = "school_id"),
-            inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+    @OneToMany(mappedBy = "school")
     private List<Vehicle> vehicleList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Student student;
+    @OneToMany(mappedBy = "school")
+    private List<Student> student;
 
     private Integer currentTemperature;
 

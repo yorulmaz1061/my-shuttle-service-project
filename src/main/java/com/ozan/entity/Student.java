@@ -27,7 +27,8 @@ public class Student extends User {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @OneToOne(mappedBy = "student")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "school_id")
     private School school;
 
     @OneToMany(mappedBy = "student")

@@ -1,6 +1,7 @@
 package com.ozan.service.impl;
 
 import com.ozan.dto.SchoolDTO;
+import com.ozan.dto.VehicleDTO;
 import com.ozan.entity.School;
 import com.ozan.exception.NotFoundException;
 import com.ozan.mapper.MapperUtil;
@@ -44,6 +45,13 @@ public class SchoolServiceImpl implements SchoolService {
         School school = schoolRepository.findBySchoolNameAndIsDeleted(schoolName,false);
         school.setIsDeleted(true);
         schoolRepository.save(school);
+    }
+
+    @Override
+    public List<SchoolDTO> listAvailableSchools() {
+        List<School> schoolList = schoolRepository.findAllByIsDeletedOrderBySchoolName(false);
+        return schoolList.stream().map(school -> mapperUtil.convert(school, new SchoolDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.ozan.service;
 
-import com.ozan.dto.DriverDTO;
 import com.ozan.dto.VehicleDTO;
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface VehicleService {
     VehicleDTO assignToHostess(String plateNumber, String userTcId);
 
     VehicleDTO assignToStudent(String plateNumber, String userTcId);
+
+    VehicleDTO assignToSchool(String plateNumber, Long id);
 }

@@ -37,8 +37,9 @@ public class Vehicle extends BaseEntity {
     @JoinColumn(name = "hostess_id")
     private Hostess hostess;
 
-    @ManyToMany(mappedBy = "vehicleList")
-    private List<School> schoolList;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "school_id")
+    private School school;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Student> studentList;

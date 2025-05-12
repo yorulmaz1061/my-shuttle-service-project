@@ -1,6 +1,7 @@
 package com.ozan.controller;
 
 import com.ozan.dto.*;
+import com.ozan.service.SchoolService;
 import com.ozan.service.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,11 @@ import java.util.List;
 @RequestMapping("/api/v1/vehicle")
 public class VehicleController {
     private final VehicleService vehicleService;
+    private final SchoolService schoolService;
 
-    public VehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService, SchoolService schoolService) {
         this.vehicleService = vehicleService;
+        this.schoolService = schoolService;
     }
 
     @PostMapping
@@ -81,6 +84,13 @@ public class VehicleController {
                 HttpStatus.OK.value(), studentAssignedVehicleDTO);
         return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
 
+    }
+    @PostMapping("/{vehiclePlateNumber}/assign-school")
+    public ResponseEntity<ResponseWrapper> assignSchool(@PathVariable("vehiclePlateNumber") String plateNumber, @RequestBody SchoolDTO schoolDTO) {
+        VehicleDTO schoolAssignedVehicleDTO = vehicleService.assignToSchool(plateNumber, schoolDTO.getId());
+        ResponseWrapper responseWrapper = new ResponseWrapper(true, "School is assigned to vehicle.",
+                HttpStatus.OK.value(), schoolAssignedVehicleDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseWrapper);
     }
 
 
