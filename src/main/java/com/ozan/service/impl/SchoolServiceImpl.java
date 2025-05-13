@@ -62,9 +62,12 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SchoolDTO findSchoolByName(String schoolName) {
         School school = schoolRepository.findBySchoolNameAndIsDeleted(schoolName, false);
-        if (school != null) return mapperUtil.convert(school, new SchoolDTO());
-        else throw new NotFoundException("School not found.");
-
+        if (school == null) throw new NotFoundException("School not found.");
+        SchoolDTO dto = mapperUtil.convert(school, new SchoolDTO());
+        String decodedCity = URLDecoder.decode(dto.getSchoolCity(), StandardCharsets.UTF_8);
+        Integer temperature = retrieveTemperatureByCity(decodedCity);
+        dto.setCurrentTemperature(temperature);
+        return dto;
     }
 
     @Override
@@ -90,34 +93,43 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     private Integer retrieveTemperatureByCity(String city) {
-        int maxRetries = 3;
-        int retryCount = 0;
-        long waitTime = 2000;
+        final int maxRetries = 3;
+        final long initialWaitTime = 2000; // 2 saniye
         String formattedCity = city.trim();
+
+        int retryCount = 0;
+        long waitTime = initialWaitTime;
 
         while (retryCount < maxRetries) {
             try {
-                WeatherResponse currentWeather = weatherApiClient.getCurrentTemperature(accessKey, formattedCity);
+                WeatherResponse response = weatherApiClient.getCurrentTemperature(accessKey, formattedCity);
 
-                if (currentWeather == null || currentWeather.getCurrent() == null) {
+                if (isResponseInvalid(response)) {
                     return null;
                 }
-                return currentWeather.getCurrent().getTemperature();
+
+                return response.getCurrent().getTemperature();
             } catch (Exception e) {
                 retryCount++;
                 if (retryCount < maxRetries) {
-                    try {
-                        Thread.sleep(waitTime);
-                        waitTime *= 2;
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        return null;
-                    }
+                    waitBeforeRetry(waitTime);
+                    waitTime *= 2; // Exponential backoff
                 }
             }
         }
         return null;
     }
 
+    private boolean isResponseInvalid(WeatherResponse response) {
+        return response == null || response.getCurrent() == null;
+    }
+
+    private void waitBeforeRetry(long waitTimeMillis) {
+        try {
+            Thread.sleep(waitTimeMillis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // thread’i düzgün şekilde sonlandır
+        }
+    }
 
 }
