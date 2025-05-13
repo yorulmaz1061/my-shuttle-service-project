@@ -32,6 +32,4 @@ public class School extends BaseEntity {
     @OneToMany(mappedBy = "school")
     private List<Student> student;
 
-    private Integer currentTemperature;
-
 }
